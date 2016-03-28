@@ -1,7 +1,7 @@
 var serialPort = require('serialport');
 var onExit = require('signal-exit');
 
-var START_VAL        = 0x7e;
+var START_VAL        = 0x7E;
 var MSG_TYPE_DMX_OUT = 0x06;
 var DMX_STARTCODE    = 0x00;
 var END_VAL          = 0xE7;
@@ -70,16 +70,17 @@ var findAndConnect = function() {
 
 var sendBuffer;
 var frame = 0;
+var channels = 500;
 
 var prepareBuffer = function() {
-  sendBuffer = new Buffer(5 + 512 + 1);
+  sendBuffer = new Buffer(channels+6);
+  sendBuffer.fill(0x00);
   sendBuffer[0] = START_VAL;
   sendBuffer[1] = MSG_TYPE_DMX_OUT;
-  sendBuffer[2] = 512 & 0xFF;
-  sendBuffer[3] = 512 >> 8;
+  sendBuffer[2] = (channels+1) & 0xFF;
+  sendBuffer[3] = (channels+1) >> 8;
   sendBuffer[4] = DMX_STARTCODE;
-  sendBuffer.fill(0x00, 5, 5 + 512);
-  sendBuffer[5 + 512] = END_VAL;
+  sendBuffer[5 + channels] = END_VAL;
 }
 
 var setValues = function(values) {
@@ -93,11 +94,13 @@ var dmxLoop = function() {
 };
 
 var onSend = function(error) {
-  console.log('Error on SEND', error);
+  if(error) {
+    console.log('Error on SEND',error);
+  }
 };
 
-findAndConnect();
 prepareBuffer();
+findAndConnect();
 
 module.exports = {
   setValues: setValues
