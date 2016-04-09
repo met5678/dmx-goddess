@@ -77,7 +77,7 @@ var setChannels = function(inBuffer) {
     channels = inBuffer.length;
     prepareBuffer();
   }
-  inBuffer.copy(sendBuffer,5);
+  Buffer(inBuffer).copy(sendBuffer,5);
   /*for(var i=0; i<values.length; i++) {
     sendBuffer[i+5] = values[i];
   }*/
