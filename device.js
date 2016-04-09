@@ -7,37 +7,22 @@ var DMX_STARTCODE    = 0x00;
 var END_VAL          = 0xE7;
 
 var fps = 40;
-var channels = [];
 var dmxPro;
+var open = false;
 
 var portOpen = function(err) {
-  if(err) {
-    console.log('Error on OPEN', err);
-  }
-  else {
-    console.log('OPEN');
-    open = true;
-    setInterval(dmxLoop, 1000/fps);
-  }
-};
+  console.log('OPEN');
+  open = true;
+  setInterval(dmxLoop, 1000/fps);
+}
 
 var portError = function(err) {
-  if(err) {
-    console.log('Error on ERROR', err);
-  }
-  else {
-    console.log('Error');
-  }
+  console.log('DMX Device error',err);
 };
 
 var portClose = function(err) {
   open = false;
-  if(err) {
-    console.log('Error on CLOSE', err);
-  }
-  else {
-    console.log('CLOSE');
-  }
+  console.log('DMX Device close',err);
 };
 
 var initPort = function(port) {
@@ -69,8 +54,7 @@ var findAndConnect = function() {
 };
 
 var sendBuffer;
-var frame = 0;
-var channels = 500;
+var channels = 0;
 
 var prepareBuffer = function() {
   sendBuffer = new Buffer(channels+6);
@@ -83,10 +67,19 @@ var prepareBuffer = function() {
   sendBuffer[5 + channels] = END_VAL;
 }
 
-var setValues = function(values) {
-  for(var i=0; i<values.length; i++) {
-    sendBuffer[i+5] = values[i];
+var setChannels = function(inBuffer) {
+  if(values.length > 512) {
+    console.log('Too many channels');
+    return;
   }
+  if(values.length != channels) {
+    channels = values.length;
+    prepareBuffer();
+  }
+  inBuffer.copy(sendBuffer,5);
+  /*for(var i=0; i<values.length; i++) {
+    sendBuffer[i+5] = values[i];
+  }*/
 }
 
 var dmxLoop = function() {
@@ -99,9 +92,8 @@ var onSend = function(error) {
   }
 };
 
-prepareBuffer();
 findAndConnect();
 
 module.exports = {
-  setValues: setValues
+  setChannels: setChannels
 };
