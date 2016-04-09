@@ -76,7 +76,7 @@ var setChannels = function(inBuffer) {
     channels = inBuffer.length;
     prepareBuffer();
   }
-  Buffer(inBuffer).copy(sendBuffer,5);
+  inBuffer.copy(sendBuffer,5);
 }
 
 var dmxLoop = function() {

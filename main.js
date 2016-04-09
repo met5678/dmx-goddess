@@ -20,7 +20,7 @@ if(channelsInput) {
 ipc.initSocket(config);
 
 ipc.on('channels', function(data) {
-  if(data && data.length) {
-    device.setChannels(data);
+  if(data && data.length && data.length > 0 && data.length < 512) {
+    device.setChannels(Buffer(data));
   }
 });
