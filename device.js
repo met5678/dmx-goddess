@@ -68,7 +68,6 @@ var prepareBuffer = function() {
 }
 
 var setChannels = function(inBuffer) {
-  console.log(inBuffer.length);
   if(inBuffer.length > 512) {
     console.log('Too many channels');
     return;
@@ -78,9 +77,6 @@ var setChannels = function(inBuffer) {
     prepareBuffer();
   }
   Buffer(inBuffer).copy(sendBuffer,5);
-  /*for(var i=0; i<values.length; i++) {
-    sendBuffer[i+5] = values[i];
-  }*/
 }
 
 var dmxLoop = function() {
