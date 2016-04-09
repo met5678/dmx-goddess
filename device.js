@@ -57,7 +57,6 @@ var sendBuffer;
 var channels = 0;
 
 var prepareBuffer = function() {
-  console.log("PREPARE BUFFER");
   sendBuffer = new Buffer(channels+6);
   sendBuffer.fill(0x00);
   sendBuffer[0] = START_VAL;
@@ -69,7 +68,6 @@ var prepareBuffer = function() {
 }
 
 var setChannels = function(inBuffer) {
-  console.log("SET CHANNELS",inBuffer.length);
   if(inBuffer.length > 512) {
     console.log('Too many channels');
     return;
