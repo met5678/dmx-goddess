@@ -68,6 +68,7 @@ var prepareBuffer = function() {
 }
 
 var setChannels = function(inBuffer) {
+  console.log(inBuffer.length);
   if(inBuffer.length > 512) {
     console.log('Too many channels');
     return;
