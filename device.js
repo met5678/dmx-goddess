@@ -67,13 +67,13 @@ var prepareBuffer = function() {
   sendBuffer[5 + channels] = END_VAL;
 }
 
-var setChannels = function(values) {
-  if(values.length > 512) {
+var setChannels = function(inBuffer) {
+  if(inBuffer.length > 512) {
     console.log('Too many channels');
     return;
   }
-  if(values.length != channels) {
-    channels = values.length;
+  if(inBuffer.length != channels) {
+    channels = inBuffer.length;
     prepareBuffer();
   }
   inBuffer.copy(sendBuffer,5);
