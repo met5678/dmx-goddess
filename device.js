@@ -82,7 +82,9 @@ var setChannels = function(inBuffer) {
 }
 
 var dmxLoop = function() {
-  dmxPro.write(sendBuffer, onSend);
+  if(sendBuffer && sendBuffer.length > 0) {
+    dmxPro.write(sendBuffer, onSend);
+  }
 };
 
 var onSend = function(error) {
