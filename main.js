@@ -10,6 +10,7 @@ const config = {
 };
 
 const channelsInput = nconf.get('IN_CHANNELS');
+console.log(channelsInput);
 if(channelsInput) {
   config.inputs = {
     'channels': channelsInput
